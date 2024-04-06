@@ -68,6 +68,8 @@ lesson_id = ""
 default_speed = 20000
 letter_time = 0
 
+errors = 0
+
 # Initialize Pause-thread
 listener = pynput.keyboard.Listener(on_press=on_key_press)
 controller = pynput.keyboard.Controller()
@@ -77,8 +79,6 @@ listener.start()
 
 print("Welcome to auto typer (alpha)!")
 settings()
-
-errors = 0
 
 print("You may pause the application by pressing the escape key and resume by pressing it once more.")
 
