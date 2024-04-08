@@ -42,6 +42,7 @@ def settings():
                 break
         except:
             print("Invalid input.")
+    print(f"[i] The application will make {errors} mistakes.")
 
 
 def on_key_press(symbol):
@@ -105,6 +106,7 @@ for char in text:
     controller.type(char)
     if errors > 0:
         controller.type("°")
+        errors -= 1
     time.sleep(letter_time)
     if not running:
         print("Application is paused.")
