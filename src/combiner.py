@@ -4,7 +4,7 @@ import os
 combined_file_path = "lessons.txt"
 text = ""
 
-files = os.listdir("files/")
+files = os.listdir("../files/")
 files = natsorted(files)
 
 i = 0

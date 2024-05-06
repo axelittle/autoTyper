@@ -118,7 +118,7 @@ while running and len(text) <= character_count:
 
     text += next_letters
 
-    time.sleep(0.6)
+    time.sleep(1)
     write(next_letters)
     time.sleep(timer)
 
