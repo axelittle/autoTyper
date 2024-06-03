@@ -24,7 +24,7 @@ def settings():
                 lesson_amount = 1
                 break
             lesson_amount = int(lesson_amount)
-            _ = text[str(lesson_id + lesson_amount)]
+            _ = text[str(lesson_id + lesson_amount - 1)]
             break
         except:
             print("[!] The input is invalid.")
