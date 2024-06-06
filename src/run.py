@@ -151,9 +151,9 @@ current_text = ""
 while current_lesson < lesson_id + lesson_amount:
     current_text = text[str(current_lesson)]
     if use_config:
-        error_percentage = random.randrange(error_range[0], error_range[1]) / 100
-        letter_time = 600 / random.randrange(speed_range[0], speed_range[1])
-        print(f"[i] Selected values by configuration: ({error_percentage}, {letter_time}).")
+        error_percentage = random.uniform(error_range[0], error_range[1]) / 100
+        letter_time = 600 / random.uniform(speed_range[0], speed_range[1])
+        print(f"[i] Selected values by configuration: ({error_percentage}, {600 * letter_time}).")
     mistakes = round(error_percentage * len(current_text))
 
     print("[i] You may pause the application by pressing the escape key and resume by pressing it once more.")
