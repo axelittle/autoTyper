@@ -3,6 +3,7 @@ import os.path
 import random
 import time
 import pynput
+import pyautogui
 import json
 
 
@@ -48,6 +49,11 @@ def settings():
             speed_max = config["speed_max"]
             speed_min = config["speed_min"]
 
+            print(" [i] Press shift and then click on the continue button.")
+            get_shift_press()
+            if config["auto_click"]:
+                get_click()
+
             print(f"[i] Mistake range loaded as ({error_min}:{error_max}).")
             print(f"[i] Speed range loaded as ({speed_min}:{speed_max}).")
 
@@ -90,6 +96,25 @@ def settings():
     print(f"[i] The application will make {error_percentage * 100} percent mistakes.")
 
 
+def on_click(x, y, button, pressed):
+    global click_position
+
+    if button != pynput.mouse.Button.left or not pressed:
+        return
+
+    click_position = (x, y)
+    return False
+
+
+def get_click():
+    with pynput.mouse.Listener(on_click=on_click) as click_listener:
+        click_listener.join()
+
+
+def click_continue():
+    pyautogui.click(click_position)
+
+
 def on_key_press(symbol):
     global running
     if symbol == pynput.keyboard.Key.esc:
@@ -125,6 +150,8 @@ text = ""
 lesson_amount = 0
 lesson_id = 1
 
+click_position = ()
+
 # Initialize Pause-thread
 listener = pynput.keyboard.Listener(on_press=on_key_press)
 controller = pynput.keyboard.Controller()
@@ -154,13 +181,16 @@ while current_lesson < lesson_id + lesson_amount:
         error_percentage = random.uniform(error_range[0], error_range[1]) / 100
         letter_time = 600 / random.uniform(speed_range[0], speed_range[1])
         print(f"[i] Selected values by configuration: ({error_percentage}, {600 * letter_time}).")
+        if click_position != ():
+            click_continue()
     mistakes = round(error_percentage * len(current_text))
 
     print("[i] You may pause the application by pressing the escape key and resume by pressing it once more.")
     print(f"[i] Now doing lesson {current_lesson} with {mistakes} mistakes..")
     print(f"[i] Confirm beginning of lesson: \"{current_text[:50]}\"")
-    print("[i] Open up the tab and start the process by pressing shift.")
-    get_shift_press()
+    if click_position == () or current_lesson == lesson_id:
+        print("[i] Open up the tab and start the process by pressing shift.")
+        get_shift_press()
 
     time.sleep(1)
 
