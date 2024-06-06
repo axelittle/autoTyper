@@ -11,7 +11,7 @@ def settings():
     # Load lesson
     while True:
         try:
-            lesson_id = int(input("Enter the id of the lesson you would like to complete: "))
+            lesson_id = int(input("[?] Enter the id of the lesson you would like to complete: "))
             _ = text[str(lesson_id)]
             break
         except:
@@ -19,7 +19,7 @@ def settings():
 
     while True:
         try:
-            lesson_amount = input("Enter the amount of lessons you would like to complete (defaults to 1): ")
+            lesson_amount = input("[?] Enter the amount of lessons you would like to complete (defaults to 1): ")
             if lesson_amount == "":
                 lesson_amount = 1
                 break
@@ -31,7 +31,7 @@ def settings():
 
     while True:
         try:
-            user_input = input("Enter the keys/10min value (defaults to 20'000): ")
+            user_input = input("[?] Enter the keys/10min value (defaults to 20'000): ")
             if user_input == "":
                 speed = 20000
                 letter_time = 600 / speed
@@ -43,21 +43,21 @@ def settings():
             letter_time = 600 / speed
             break
         except:
-            print("Invalid input.")
+            print("[!] Invalid input.")
 
     while True:
         try:
-            user_input = input("Enter the amount of mistakes you would like to get in percent (defaults to 0): ")
+            user_input = input("[?] Enter the amount of mistakes you would like to get in percent (defaults to 0): ")
             if user_input == "":
                 error_percentage = 0
                 break
-            error_percentage = abs(int(user_input)) / 100
-            if error_percentage > 20:
-                print("Setting more than 30 percent is not allowed.")
+            error_percentage = abs(float(user_input)) / 100
+            if error_percentage > 80:
+                print("[!] Setting more than 80 percent is not allowed.")
             else:
                 break
         except:
-            print("Invalid input.")
+            print("[!] Invalid input.")
     print(f"[i] The application will make {error_percentage * 100} percent mistakes.")
 
 
@@ -115,9 +115,10 @@ current_lesson = lesson_id
 current_text = ""
 
 while current_lesson < lesson_id + lesson_amount:
-    print("[i] You may pause the application by pressing the escape key and resume by pressing it once more.")
-    print(f"[i] Now doing lesson {current_lesson}.")
     current_text = text[str(current_lesson)]
+    mistakes = round(error_percentage * len(current_text))
+    print("[i] You may pause the application by pressing the escape key and resume by pressing it once more.")
+    print(f"[i] Now doing lesson {current_lesson} with {mistakes} mistakes..")
     print(f"[i] Confirm beginning of lesson: \"{current_text[:50]}\"")
     print("[i] Open up the tab and start the process by pressing shift.")
     get_shift_press()
@@ -129,7 +130,6 @@ while current_lesson < lesson_id + lesson_amount:
 
     time.sleep(1)
 
-    mistakes = round(error_percentage * len(text))
     for char in current_text:
         if not running:
             exit()
@@ -145,4 +145,4 @@ while current_lesson < lesson_id + lesson_amount:
             print("Application is resuming.")
     current_lesson += 1
 print("The application finished typing.")
-input("Press enter to exit.")
+time.sleep(5)
