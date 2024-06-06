@@ -1,4 +1,6 @@
 # Import
+import os.path
+import random
 import time
 import pynput
 import json
@@ -6,7 +8,10 @@ import json
 
 # Functions
 def settings():
-    global error_percentage, letter_time, lesson_amount, lesson_id
+    global error_percentage, letter_time, lesson_amount, lesson_id, use_config, error_range, speed_range
+    
+    if os.path.exists(config_path):
+        use_config = input("[?] A config file was found. Would you like to use it? [y/n]: ").lower() == "y"
 
     # Load lesson
     while True:
@@ -28,6 +33,30 @@ def settings():
             break
         except:
             print("[!] The input is invalid.")
+
+    if use_config:
+        try:
+            with open(config_path, "r") as config_file:
+                config = json.loads(config_file.read())
+
+            name = config["name"]
+            print(f"[i] Using config: \"{name}\"")
+
+            error_max = config["error_max"]
+            error_min = config["error_min"]
+
+            speed_max = config["speed_max"]
+            speed_min = config["speed_min"]
+
+            print(f"[i] Mistake range loaded as ({error_min}:{error_max}).")
+            print(f"[i] Speed range loaded as ({speed_min}:{speed_max}).")
+
+            error_range = (error_min, error_max)
+            speed_range = (speed_min, speed_max)
+            return
+        except:
+            use_config = False
+            input("[!] Could not load config properly. Press enter to continue in normal mode.")
 
     while True:
         try:
@@ -73,14 +102,19 @@ def on_shift_press(key):
 
 
 def get_shift_press():
-    with pynput.keyboard.Listener(on_press=on_shift_press) as listener:
-        listener.join()
+    with pynput.keyboard.Listener(on_press=on_shift_press) as shift_listener:
+        shift_listener.join()
 
 
 # Declarations
 running = True
 
 lesson_file = "lessons.txt"
+config_path = "typerconfig.json"
+
+use_config = False
+error_range = ()
+speed_range = ()
 
 default_speed = 20000
 letter_time = 0
@@ -116,7 +150,12 @@ current_text = ""
 
 while current_lesson < lesson_id + lesson_amount:
     current_text = text[str(current_lesson)]
+    if use_config:
+        error_percentage = random.randrange(error_range[0], error_range[1]) / 100
+        letter_time = 600 / random.randrange(speed_range[0], speed_range[1])
+        print(f"[i] Selected values by configuration: ({error_percentage}, {letter_time}).")
     mistakes = round(error_percentage * len(current_text))
+
     print("[i] You may pause the application by pressing the escape key and resume by pressing it once more.")
     print(f"[i] Now doing lesson {current_lesson} with {mistakes} mistakes..")
     print(f"[i] Confirm beginning of lesson: \"{current_text[:50]}\"")
@@ -134,7 +173,7 @@ while current_lesson < lesson_id + lesson_amount:
         if not running:
             exit()
         controller.type(char)
-        if mistakes > 0:
+        if mistakes >= 1:
             controller.type("°")
             mistakes -= 1
         time.sleep(letter_time)

@@ -1,0 +1,7 @@
+{
+  "name": "Default config",
+  "error_min": 1,
+  "error_max": 3,
+  "speed_min": 800,
+  "speed_max": 1200
+}
