@@ -49,7 +49,7 @@ def settings():
             speed_max = config["speed_max"]
             speed_min = config["speed_min"]
 
-            print(" [i] Press shift and then click on the continue button.")
+            print("[i] Press shift and then click on the continue button.")
             get_shift_press()
             if config["auto_click"]:
                 get_click()
