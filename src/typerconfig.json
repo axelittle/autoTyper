@@ -1,8 +1,8 @@
 {
   "name": "Default config",
-  "error_min": 1,
+  "error_min": 0.4,
   "error_max": 3,
-  "speed_min": 1500,
-  "speed_max": 2000,
+  "speed_min": 3000,
+  "speed_max": 4000,
   "auto_click": true
 }

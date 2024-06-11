@@ -159,11 +159,11 @@ listener.start()
 
 # Load text
 try:
-    with open("lessons.json", "r", encoding="utf-8") as file:
+    with open(lesson_file, "r", encoding="utf-8") as file:
         text = json.loads(file.read())
         print("[i] The text file was loaded successfully.")
 except:
-    print("[FE] the \"lessons.json\" file could not be found. Try downloading all files again.")
+    print("[FE] The \"lessons.json\" file could not be found. Try downloading all files again.")
     input("[i] Press enter to quit.")
 
 # Get account and lesson info
@@ -182,7 +182,10 @@ while current_lesson < lesson_id + lesson_amount:
         letter_time = 600 / random.uniform(speed_range[0], speed_range[1])
         print(f"[i] Selected values by configuration: ({error_percentage}, {600 * letter_time}).")
         if click_position != ():
+            time.sleep(3)
             click_continue()
+            print("[i] Write button was clicked.")
+            time.sleep(5)
     mistakes = round(error_percentage * len(current_text))
 
     print("[i] You may pause the application by pressing the escape key and resume by pressing it once more.")
