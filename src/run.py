@@ -146,7 +146,7 @@ letter_time = 0
 
 error_percentage = 0
 
-text = ""
+text = {}
 lesson_amount = 0
 lesson_id = 1
 
@@ -161,11 +161,12 @@ listener.start()
 try:
     with open(lesson_file, "r", encoding="utf-8") as file:
         print("[i] The text file was loaded successfully.")
+        text = json.loads(file.read())
 except:
     print("[FE] The \"lessons.json\" file could not be found. Try downloading all files again.")
     input("[i] Press enter to quit.")
 
-# Get account and lesson info
+# Get lesson info
 
 print("[i] Welcome to autoTyper (alpha)!")
 settings()
