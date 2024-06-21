@@ -134,7 +134,7 @@ def get_shift_press():
 # Declarations
 running = True
 
-lesson_file = "lessons.txt"
+lesson_file = "lessons.json"
 config_path = "typerconfig.json"
 
 use_config = False
@@ -160,7 +160,6 @@ listener.start()
 # Load text
 try:
     with open(lesson_file, "r", encoding="utf-8") as file:
-        text = json.loads(file.read())
         print("[i] The text file was loaded successfully.")
 except:
     print("[FE] The \"lessons.json\" file could not be found. Try downloading all files again.")
@@ -198,7 +197,7 @@ while current_lesson < lesson_id + lesson_amount:
     time.sleep(1)
 
     # Begin typing
-    controller.type(" ")
+    controller.type("#")
 
     time.sleep(1)
 
